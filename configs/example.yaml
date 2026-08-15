@@ -1,0 +1,86 @@
+# trail model-in evaluation request (mirrors ModelRequest; spec §5.1-§5.2).
+# Run: trail eval --config configs/example.yaml
+
+# Adapter selection — never inferred from the checkpoint (spec §5.2).
+task: classification          # classification | llm
+
+# Forgetting mode; must agree with data.mode below.
+mode: single_class            # single_class | random | sub_class_atypical
+
+# One integer seed per request (G2). Component substreams are derived via
+# named substreams; multi-seed evaluation ({2, 3, 42}) is an aggregator-level
+# sweep convention, not a per-call list.
+seed: 42
+
+# Checkpoint roles (spec §4.2). Only `unlearned` is required; absent roles
+# produce missing_role:<role> skips for their dependent metrics, never errors.
+checkpoints:
+  unlearned: runs/example/unlearned_seed42.pth   # REQUIRED — model under evaluation
+  original: runs/example/original_seed42.pth     # optional pre-unlearning model (null to omit)
+  gold: null                                     # optional retrain-from-scratch reference
+                                                 # ("retained model" alias accepted, never reported)
+
+# Either a declarative DatasetSpec (below — the library builds the splits) or
+# user-supplied loaders via the Python API (SplitBundle).
+data:
+  name: cifar10
+  data_dir: ./data
+  mode: single_class          # single_class | random | sub_class_atypical
+  forget_class: 0             # required for single_class / sub_class_atypical ("airplane")
+  forget_fraction: null       # required for random / sub_class_atypical, e.g. 0.1
+  split_seed: 0               # random-mode forget permutation seed
+  carveout_seed: 42           # per-class 90/10 train/val carve-out seed (fixture-era recipe)
+  val_fraction: 0.1
+
+# "default" resolves to the adapter's default panel; an explicit list selects
+# subsets or opts into expensive metrics.
+metrics: default
+
+# Versioned protocol hyperparameters (defaults shown; spec §5.2).
+hp:
+  references:
+    gold: "off"               # "off" | "build" | <path>  (quoted: bare off is YAML false)
+    shadow: 0                 # 0 | 8 shadow models; never trained unless opted in
+  mia:
+    default: threshold_population            # §7.3
+    signals: [correctness, confidence, entropy, m_entropy]
+  relearn:                                    # §10 standardized grid
+    # NOTE: the attack source is selected by METRIC NAME (relearn_forget =
+    # forget_only / relearn_retain_mix = retain_mix / relearn_d2d = 1%/9%);
+    # a `source:` key here is a validation error.
+    budgets: [0, 10, 100, "full"]
+    epochs: 10
+    lr: 0.01
+    momentum: 0.9
+    weight_decay: 0.0001
+    batch_size: 128
+  bootstrap:
+    n: 1000
+    alpha: 0.05
+  metric_overrides: {}        # per-metric overrides, stamped into the report (G9)
+
+# RuntimeConfig (spec §5.2). batch_size null = adapter-safe default with
+# OOM-halving retry; results are batch-size-invariant by construction.
+runtime:
+  device: auto
+  batch_size: null
+  num_workers: 4
+  amp: null
+
+# CacheConfig (spec §5.2). readonly: true for CI (hits allowed, writes forbidden);
+# disable lists individual cache layers, e.g. [L1].
+cache:
+  dir: .trail_cache
+  readonly: false
+  disable: []
+
+# LogConfig. Weights & Biases tracking is opt-in (set wandb: true; offline mode
+# engages automatically without credentials). Reports stay complete without
+# any tracking backend.
+# Run names are auto-generated from task/mode/seed; wandb_entity null -> the
+# account default.
+log:
+  wandb: false
+  wandb_project: trail
+  wandb_entity: null
+  level: INFO

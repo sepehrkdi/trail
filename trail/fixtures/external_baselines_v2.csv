@@ -1,0 +1,12 @@
+method,mode,seed,carveout_seed,n_forget,ckpt,forget_train_acc,retain_train_acc,full_test_acc,retain_test_acc,forget_test_acc,unlearning_acc,headline_test_acc
+l1sparse_paper,single_class,2,2,4500,l1sparse_paper_single_class_seed2.pth,0,98.884,83.23,92.4778,0,100,92.4778
+l1sparse_budget,single_class,2,2,4500,l1sparse_budget_single_class_seed2.pth,0,97.284,81.87,90.9667,0,100,90.9667
+l1sparse_paper,random,2,2,4500,l1sparse_paper_random_seed2.pth,95.6889,98.0444,91.22,91.22,,4.3111,91.22
+l1sparse_budget,random,2,2,4500,l1sparse_budget_random_seed2.pth,94.0222,97.563,90.36,90.36,,5.9778,90.36
+l1sparse_paper,single_class,3,3,4500,l1sparse_paper_single_class_seed3.pth,0.0,90.5654,78.68,87.4222,0.0,100.0,87.4222
+l1sparse_budget,single_class,3,3,4500,l1sparse_budget_single_class_seed3.pth,0.0,93.0667,80.26,89.1778,0.0,100.0,89.1778
+l1sparse_paper,single_class,42,42,4500,l1sparse_paper_single_class_seed42.pth,0.0,92.7457,79.82,88.6889,0.0,100.0,88.6889
+l1sparse_budget,single_class,42,42,4500,l1sparse_budget_single_class_seed42.pth,0.0,93.7654,80.64,89.6,0.0,100.0,89.6
+salun_paper,single_class,2,2,4500,salun_paper_single_class_seed2.pth,0.0,99.884,84.87,94.3,0.0,100.0,94.3
+jaeunglee_original,single_class,2,2,4500,resnet18_cifar10_full.pth,,,95.4,,,,
+jaeunglee_gold_airplane,single_class,2,2,4500,resnet18_cifar10_no_airplane.pth,,,,95.3,,,

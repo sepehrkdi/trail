@@ -1,0 +1,21 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+.trail_cache*/
+wandb/
+logs/*.log
+logs/*.pid
+runs/
+# Anchored to the repo root: ignore a top-level dataset dir (e.g. ./data from
+# data_dir=./data) WITHOUT swallowing the trail/data/ source package, which
+# the unanchored `data/` pattern was silently excluding from version control.
+/data/
+*.pth
+*.pt
+!trail/fixtures/**/*.csv
+!trail/fixtures/**/*.json
+!trail/fixtures/**/*.md
+!trail/fixtures/**/*.npz

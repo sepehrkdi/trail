@@ -1,0 +1,6 @@
+{
+ "transform_image0_sum": -595.2457275390625,
+ "transform_image0_mean": -0.19376488029956818,
+ "ckpt": "salun_paper_single_class_seed2.pth",
+ "note": "logits of the first 8 canonical test images under the CIFAR ResNet-18 factory (3x3 stem, Identity maxpool); agreement to 1e-4 discharges preprocessing- and model-stem drift as the cause of a gate failure"
+}
