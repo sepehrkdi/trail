@@ -1,6 +1,6 @@
 # TRAIL
 
-TRAIL is a unified, reproducible evaluation library for machine unlearning. It scores *unlearned checkpoints* — it implements no unlearning methods — under one frozen, modality-agnostic protocol: a single `evaluate()` contract, per-example bootstrap uncertainty on every number, machine-readable skip reasons for everything it cannot compute, full provenance (checkpoint hashes, dataset fingerprints, hidden-preprocessing manifest) on everything it can, and a shipped regression gate that ties each release back to published baseline numbers. Its attack axes are standardized membership-inference and relearning (fine-tuning recovery) evaluations.
+TRAIL is a unified, reproducible evaluation library for machine unlearning. It scores *unlearned checkpoints* - it implements no unlearning methods - under one frozen, modality-agnostic protocol: a single `evaluate()` contract, per-example bootstrap uncertainty on every number, machine-readable skip reasons for everything it cannot compute, full provenance (checkpoint hashes, dataset fingerprints, hidden-preprocessing manifest) on everything it can, and a shipped regression gate that ties each release back to published baseline numbers. Its attack axes are standardized membership-inference and relearning (fine-tuning recovery) evaluations.
 
 ## Install
 
@@ -51,23 +51,23 @@ request field inline.
 | Role | Required | Notes |
 |---|---|---|
 | `unlearned` | yes (model-in) | the subject under test |
-| `original` | optional | **identity-bound — user only.** Deltas and pre-attack baselines need the *actual* parent model; it cannot be derived |
+| `original` | optional | **identity-bound - user only.** Deltas and pre-attack baselines need the *actual* parent model; it cannot be derived |
 | `gold` | optional | retrained-from-scratch reference; expensive but **derivable** (`hp.references.gold="build"`), method-independent, cached and amortized across methods |
 
 Partial availability degrades monotonically: missing roles produce skips that name their unlock, never crashes or silent omissions.
 
 ## Guarantees (G1–G10)
 
-- **G1 Determinism** — identical `(request, seed, library_version)` give identical reports up to documented float tolerance.
-- **G2 Single-seed discipline** — one seed per request; all randomness via named substreams in `core/seeding.py` (lint-enforced).
-- **G3 Provenance completeness** — every number traces to a checkpoint SHA-256, dataset fingerprint, and library/code version; incomplete provenance refuses to serialize.
-- **G4 No silent skips** — every uncomputable metric appears in `report.skipped` with a machine-readable code; runtime failures fail soft.
-- **G5 Uncertainty everywhere** — every `MetricResult` carries a per-example bootstrap CI; cross-seed dispersion lives only in the aggregator.
-- **G6 Hidden-preprocessing disclosure** — every internal preprocessing step is fingerprinted in `provenance.preprocessing`.
-- **G7 Cache correctness** — content-addressed caches; a hit is behaviorally identical to recomputation and recorded in provenance.
-- **G8 Input-mode equivalence** — outputs-in scores equal model-in scores on the same underlying outputs.
-- **G9 Frozen protocol** — versioned hyperparameter defaults; every override is stamped into the report.
-- **G10 Regression gate** — each release reproduces the shipped baseline matrix within ±1 percentage point per (method, mode, metric).
+- **G1 Determinism** - identical `(request, seed, library_version)` give identical reports up to documented float tolerance.
+- **G2 Single-seed discipline** - one seed per request; all randomness via named substreams in `core/seeding.py` (lint-enforced).
+- **G3 Provenance completeness** - every number traces to a checkpoint SHA-256, dataset fingerprint, and library/code version; incomplete provenance refuses to serialize.
+- **G4 No silent skips** - every uncomputable metric appears in `report.skipped` with a machine-readable code; runtime failures fail soft.
+- **G5 Uncertainty everywhere** - every `MetricResult` carries a per-example bootstrap CI; cross-seed dispersion lives only in the aggregator.
+- **G6 Hidden-preprocessing disclosure** - every internal preprocessing step is fingerprinted in `provenance.preprocessing`.
+- **G7 Cache correctness** - content-addressed caches; a hit is behaviorally identical to recomputation and recorded in provenance.
+- **G8 Input-mode equivalence** - outputs-in scores equal model-in scores on the same underlying outputs.
+- **G9 Frozen protocol** - versioned hyperparameter defaults; every override is stamped into the report.
+- **G10 Regression gate** - each release reproduces the shipped baseline matrix within ±1 percentage point per (method, mode, metric).
 
 ## Report anatomy
 
@@ -106,6 +106,6 @@ If you use TRAIL, please cite the accompanying paper:
 
 ## License
 
-MIT — see [`LICENSE`](LICENSE). Portions of the membership-inference code are
+MIT - see [`LICENSE`](LICENSE). Portions of the membership-inference code are
 adapted from [OPTML-Group/Unlearn-Sparse](https://github.com/OPTML-Group/Unlearn-Sparse)
 (MIT); its notice is reproduced at the end of `LICENSE`.
